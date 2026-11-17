@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Nhiệm vụ cuối cùng</title>
+<meta name="theme-color" content="#06060d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Be+Vietnam+Pro:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#e8c06a;--ink:#f4f1ea;--muted:#a9a6c4;--tc:#ff4a5c}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#06060d;color:var(--ink);font-family:'Be Vietnam Pro',sans-serif;overflow:hidden;overscroll-behavior:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+.T{font-family:'Montserrat',sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.03em}
+.serif{font-family:'Lora',serif}
+.metal{background:linear-gradient(180deg,#fff,#dfe3ec 35%,#8d95a8 52%,#f1f3f8 68%,#aab1c3);-webkit-background-clip:text;background-clip:text;color:transparent}
+#bg,#fx{position:fixed;inset:0;width:100%;height:100%}
+#fx{z-index:50;pointer-events:none}
+#app{position:fixed;left:50%;top:0;transform:translateX(-50%);width:100%;max-width:480px;height:100%;z-index:5}
+.scr{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:calc(26px + env(safe-area-inset-top)) 22px calc(22px + env(safe-area-inset-bottom));overflow-y:auto;overflow-x:hidden}
+.scr.on{display:flex;animation:in 1s ease}
+@keyframes in{from{opacity:0}to{opacity:1}}
+.btn{border:0;border-radius:999px;padding:14px 26px;font-family:'Be Vietnam Pro';font-weight:600;font-size:15px;background:rgba(255,255,255,.1);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);cursor:pointer}
+.btn:active{transform:scale(.97)}
+.btn.gold{background:linear-gradient(180deg,#f6dc9a,#c9963b);color:#1a1205;box-shadow:0 0 24px rgba(232,192,106,.35);font-weight:700}
+.btn.red{background:linear-gradient(180deg,#ff5a6a,#a3101f);color:#fff;box-shadow:0 0 30px rgba(255,59,78,.55);font-family:'Montserrat';font-weight:900;letter-spacing:.15em;font-size:17px;padding:16px 34px}
+.tag{font-size:11px;letter-spacing:.45em;color:var(--tc)}
+.fade{opacity:0;transform:translateY(10px);filter:blur(4px);transition:opacity 1.3s ease,transform 1.3s ease,filter 1.3s ease}
+.fade.in{opacity:1;transform:none;filter:none}
+.shake{animation:shake .45s}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.shakeScr{animation:shakeScr .6s cubic-bezier(.36,.07,.19,.97)}
+@keyframes shakeScr{10%,90%{transform:translate(-50%,0) translate(-2px,1px)}20%,80%{transform:translate(-50%,0) translate(4px,-3px)}30%,50%,70%{transform:translate(-50%,0) translate(-7px,4px)}40%,60%{transform:translate(-50%,0) translate(7px,-4px)}}
+.mute{position:fixed;right:14px;top:calc(14px + env(safe-area-inset-top));z-index:60;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.mute svg{width:20px;height:20px}
+.sample{display:inline-block;font-size:10px;letter-spacing:.2em;color:#9b8fa6;border:1px solid #9b8fa6;padding:1px 8px;border-radius:6px}
+.hintTap{font-size:12px;letter-spacing:.3em;color:rgba(255,255,255,.5);animation:br 2s ease-in-out infinite;margin-top:22px}
+@keyframes br{50%{opacity:.3}}
+
+/* lock */
+#lock{gap:18px}
+.dob{display:flex;gap:10px;justify-content:center}
+.dob input{width:62px;height:60px;border-radius:14px;border:0;background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);color:#fff;font-family:'Montserrat';font-weight:800;font-size:22px;text-align:center;outline:none;-webkit-user-select:text;user-select:text}
+.dob input.y{width:92px}
+.dob input:focus{box-shadow:inset 0 0 0 1.5px var(--tc),0 0 16px rgba(255,74,92,.4)}
+.dob span{align-self:center;font-size:22px;color:var(--muted)}
+.lmsg{min-height:20px;font-size:14px;color:#ff9aa4}
+
+/* dusk: squad turns to dust */
+.ol{font-family:'Lora',serif;font-size:20px;line-height:1.7;margin:6px 0;color:#ece8f6}
+.ol.big{font-family:'Montserrat';font-weight:900;font-size:26px;text-transform:uppercase;line-height:1.2;margin-top:14px}
+.squad{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:360px;margin:18px 0}
+.squad img{width:46px;height:46px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1.5px rgba(255,255,255,.5);transition:opacity 1.2s ease,filter 1.2s ease,transform 1.2s ease}
+.squad img.gone{opacity:0;filter:blur(6px) grayscale(1);transform:translateX(14px) scale(.9)}
+.squad img.back{animation:back 1s ease}
+@keyframes back{from{opacity:0;filter:brightness(3) blur(6px);transform:scale(1.4)}to{opacity:1;filter:none;transform:none}}
+
+/* stones + gauntlet */
+#quest{justify-content:space-between}
+.qHead .t{font-size:20px;line-height:1.2;margin-top:6px}
+.qHead .s{font-size:13px;color:var(--muted);margin-top:6px}
+.stones{position:relative;width:100%;height:190px;margin-top:8px}
+.stone{position:absolute;width:74px;height:84px;margin:-42px 0 0 -37px;border:0;background:transparent;padding:0;cursor:pointer;animation:float 3.2s ease-in-out infinite}
+.stone svg{width:100%;height:100%;filter:drop-shadow(0 0 14px var(--sc))}
+.stone .nm{position:absolute;left:-14px;right:-14px;top:86px;font-size:10px;letter-spacing:.12em;color:var(--sc);font-weight:700;text-transform:uppercase}
+.stone.taken{opacity:0;pointer-events:none;transition:opacity .4s}
+@keyframes float{50%{transform:translateY(-8px) rotate(4deg)}}
+.hand{position:relative;width:250px;height:300px;margin:0 auto}
+.hand svg{width:100%;height:100%;overflow:visible}
+.hand.tremble svg{animation:tremble .08s linear infinite}
+@keyframes tremble{25%{transform:translate(2px,-1px)}50%{transform:translate(-2px,1px)}75%{transform:translate(1px,2px)}}
+.qFoot{display:flex;flex-direction:column;align-items:center;gap:10px}
+.qCount{font-size:12px;letter-spacing:.3em;color:var(--muted)}
+
+/* wish modal */
+.modal{position:fixed;inset:0;z-index:40;display:none;align-items:center;justify-content:center;background:rgba(5,5,12,.8);backdrop-filter:blur(4px);padding:24px}
+.modal.on{display:flex}
+.wcard{position:relative;width:100%;max-width:420px;border-radius:22px;padding:30px 22px 22px;background:linear-gradient(170deg,#1b1530,#0c0a16);box-shadow:inset 0 0 0 1.5px var(--sc),0 0 60px var(--sc),0 30px 70px rgba(0,0,0,.6);text-align:center;animation:pop .6s cubic-bezier(.2,1.5,.4,1)}
+@keyframes pop{from{transform:scale(.5) rotate(-6deg);opacity:0}to{transform:none;opacity:1}}
+.wcard .gem{width:70px;height:80px;margin:-70px auto 6px;filter:drop-shadow(0 0 22px var(--sc))}
+.wcard .gem svg{width:100%;height:100%}
+.wcard .sn{font-family:'Montserrat';font-weight:900;font-size:18px;letter-spacing:.06em;text-transform:uppercase;color:var(--sc)}
+.wcard .sm{font-size:12px;color:var(--muted);margin-top:4px}
+.wcard .wq{margin-top:14px;font-family:'Lora',serif;font-style:italic;font-size:14px;line-height:1.55;color:var(--sc);text-align:left;padding-left:10px;border-left:2px solid var(--sc)}
+.wcard{max-height:calc(100vh - 48px);max-height:calc(100dvh - 48px);display:flex;flex-direction:column}
+.wcard .msgT.more{-webkit-mask-image:linear-gradient(#000 calc(100% - 34px),transparent);mask-image:linear-gradient(#000 calc(100% - 34px),transparent)}
+.wcard .msgT{overflow-y:auto;min-height:60px;flex:0 1 auto;font-family:'Lora',serif;font-size:17px;line-height:1.75;margin-top:16px;text-align:left;white-space:pre-wrap;color:#f3eff9}
+.wcard .sg{margin-top:14px;text-align:right;font-family:'Dancing Script',cursive;font-size:22px;color:var(--gold)}
+.wcard .more{margin-top:10px;font-size:12px;color:var(--muted)}
+.wcard .btn{margin-top:18px;width:100%}
+.flyG{position:fixed;z-index:45;width:60px;height:68px;pointer-events:none;transition:all .9s cubic-bezier(.5,0,.3,1)}
+.flyG svg{width:100%;height:100%}
+
+/* revive */
+#revive{gap:10px}
+#revive .t1{font-family:'Lora',serif;font-style:italic;font-size:20px;color:#ece8f6}
+#revive .t2{font-size:26px;line-height:1.2;color:var(--gold)}
+
+/* final */
+#final{justify-content:flex-start;gap:18px}
+.paper{position:relative;width:100%;border-radius:8px;padding:30px 22px 26px;background:#fffaf2;color:#2a1f2e;text-align:left;box-shadow:0 24px 60px rgba(0,0,0,.55)}
+.paper .tx{font-family:'Lora',serif;font-size:17px;line-height:1.85;white-space:pre-wrap;min-height:200px}
+.caret{display:inline-block;width:2px;height:18px;background:#2a1f2e;vertical-align:-3px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.endT .a{font-family:'Lora',serif;font-style:italic;font-size:18px;color:#e6e2f2}
+.endT .b{font-size:24px;margin-top:8px;color:var(--gold)}
+
+/* ---- phone tuning: fit every screen from 320x568 up, no overlap ---- */
+#lock>:first-child,#dusk>:first-child,#revive>:first-child{margin-top:auto}
+#lock>:last-child,#dusk>:last-child,#revive>:last-child{margin-bottom:auto}
+#lock,#dusk,#revive{justify-content:flex-start}
+#lock .T.metal{font-size:clamp(19px,6.4vw,28px)!important;white-space:nowrap}
+.endT .b{font-size:clamp(19px,6.2vw,24px);white-space:nowrap}
+.stones{margin-top:16px!important}
+.ol{font-size:clamp(16px,5vw,20px);line-height:1.55}
+.ol.big{font-size:clamp(21px,7vw,26px)}
+#revive .t2{font-size:clamp(21px,7vw,26px)}
+.squad{gap:min(8px,1.2vh)}
+.squad img{width:min(46px,7.2vh,12vw);height:min(46px,7.2vh,12vw)}
+.qHead{padding:0 34px;width:100%}
+.qHead .tag{letter-spacing:.3em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qHead .t{font-size:clamp(16px,5.2vw,20px);white-space:nowrap}
+.qHead .s{font-size:clamp(12px,3.6vw,13px)}
+.stones{height:min(190px,29vh);flex:none}
+.stone{width:min(74px,10.5vh);height:min(84px,12vh);margin:calc(min(84px,12vh)/-2) 0 0 calc(min(74px,10.5vh)/-2)}
+.stone .nm{top:100%;margin-top:1px}
+.hand{flex:none;height:max(160px,min(300px,calc(100vh - 400px),calc(100dvh - 400px)));width:auto;aspect-ratio:250/300}
+.qFoot{min-height:74px;justify-content:flex-end}
+@media (max-height:600px){.scr{padding-top:calc(16px + env(safe-area-inset-top));padding-bottom:calc(14px + env(safe-area-inset-bottom))}.wcard{padding:26px 18px 18px}.wcard .msgT{font-size:16px;line-height:1.65;margin-top:12px}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<canvas id="fx"></canvas>
+<audio id="bgm" src="nhac-avengers.mp3" preload="auto" loop></audio>
+<button class="mute" id="mute" type="button" aria-label="Tắt / bật nhạc"></button>
+
+<div id="app">
+  <!-- 1. LOCK -->
+  <section class="scr on" id="lock">
+    <div class="tag">NHIỆM VỤ CUỐI CÙNG</div>
+    <div class="T metal" style="font-size:28px;line-height:1.15">Thanos đã búng tay</div>
+    <div class="serif" style="font-size:17px;line-height:1.7;color:#ddd">Chỉ hai đội trưởng mới có thể<br>giành lại Găng Lõi Vô Cực.</div>
+    <div style="font-size:14px;color:var(--muted)">Xác minh danh tính bằng ngày &amp; tháng sinh của bạn</div>
+    <div class="dob" id="dob">
+      <input id="dd" inputmode="numeric" maxlength="2" placeholder="DD" aria-label="Ngày">
+      <span>/</span>
+      <input id="mm" inputmode="numeric" maxlength="2" placeholder="MM" aria-label="Tháng">
+    </div>
+    <button class="btn gold" type="button" id="unlock">Nhận nhiệm vụ</button>
+    <div class="lmsg" id="lockMsg"></div>
+  </section>
+
+  <!-- 2. DUSK -->
+  <section class="scr" id="dusk">
+    <div id="dLines"></div>
+    <div class="squad" id="squad1"></div>
+    <div id="dLines2"></div>
+    <div class="hintTap" id="duskHint" style="display:none">CHẠM ĐỂ BẮT ĐẦU</div>
+  </section>
+
+  <!-- 3. QUEST -->
+  <section class="scr" id="quest">
+    <div class="qHead"><div class="tag" id="qTag"></div><div class="t T" id="qT">Thu thập 6 viên đá</div><div class="s" id="qS">Mỗi viên đá chứa một lời chúc đồng đội gửi bạn. Chạm để mở.</div></div>
+    <div class="stones" id="stones"></div>
+    <div class="hand" id="hand"></div>
+    <div class="qFoot"><div class="qCount" id="qCount"></div><button class="btn red" type="button" id="snapBtn" style="display:none">BÚNG TAY</button></div>
+  </section>
+
+  <!-- 4. REVIVE -->
+  <section class="scr" id="revive">
+    <div class="t1 fade" id="r1">Một tia sáng…</div>
+    <div class="squad" id="squad2"></div>
+    <div class="t2 T fade" id="r2">Mọi người đã trở lại</div>
+    <div class="serif fade" id="r3" style="font-size:16px;line-height:1.7;color:#ddd;max-width:340px;margin-top:6px">Vì dù bạn ở đâu, Glab vẫn luôn ở phía sau bạn.</div>
+    <button class="btn gold fade" type="button" id="toFinal" style="margin-top:18px">Đọc bức thư cuối cùng</button>
+  </section>
+
+  <!-- 5. FINAL -->
+  <section class="scr" id="final">
+    <div style="padding:0 40px"><div class="tag" style="margin-top:4px;color:var(--gold)">THE FINAL SNAP</div><div class="T" style="font-size:19px;margin-top:6px">Cái búng tay cuối cùng</div></div><div class="serif" style="font-size:15px;line-height:1.6;color:#ddd;font-style:italic;margin-top:-6px">6 viên đá đã được thu thập.<br>Một cái búng tay, hàng ngàn lời yêu thương được gửi đi!</div>
+    <div class="paper"><div class="tx" id="fTx"></div></div>
+    <div class="endT fade" id="endT"><div class="a" id="endA"></div><div class="b T">Cửa Glab luôn rộng mở</div></div>
+    <button class="btn fade" type="button" id="again">Đọc lại các lời chúc</button>
+  </section>
+</div>
+
+<div class="modal" id="modal"><div class="wcard" id="wcard"></div></div>
+
+<script>
+/* ================= CHỈNH NỘI DUNG Ở ĐÂY =================
+   dob: ngày/tháng sinh "dd/mm" (để mở nhiệm vụ, không cần năm)
+   wishes: lời chúc ẨN DANH. Lời thứ 1 vào Đá số 1, lời thứ 2 vào Đá số 2… lời thứ 7 lại vào Đá số 1…
+   LETTER: bức thư cuối chung từ cả Glab ({name} = tên đội trưởng)
+   ======================================================== */
+var STONES = [
+  { name: 'Đá Không gian', mean: 'Không gian kỷ niệm', color: '#3b8bff' },
+  { name: 'Đá Tâm trí', mean: 'Dấu ấn trong tâm trí', color: '#ffd23f' },
+  { name: 'Đá Thực tại', mean: 'Thế giới của chúng ta', color: '#ff3b4e' },
+  { name: 'Đá Sức mạnh', mean: 'Sức mạnh tích cực', color: '#b45cff' },
+  { name: 'Đá Thời gian', mean: 'Dòng thời gian', color: '#22d37a' },
+  { name: 'Đá Linh hồn', mean: 'Điều gửi lại từ trái tim', color: '#ff9a1f' }
+];
+/* Mỗi viên đá: q = lời dẫn / câu hỏi, text = lời chúc (ẩn danh, không ghi tên người viết) */
+var LETTER = 'Gửi {name},\n\nNếu 6 viên đá lưu giữ những kỷ niệm, những dấu ấn, những tiếng cười và tình cảm mà mọi người dành cho Nguyên, thì cái búng tay cuối cùng chính là lúc tất cả những điều ấy được gửi đến em.\n\nDù hành trình tại Glab không quá dài, nhưng em đã trở thành một phần trong câu chuyện của tập thể. Cảm ơn vì đã xuất hiện, đã đồng hành, đã mang đến những nguồn năng lượng và màu sắc rất riêng.\n\nMong rằng khi bước sang một hành trình mới, Nguyên sẽ luôn giữ được sự nhiệt huyết, cá tính và tinh thần tuyệt vời ấy. Chúc em đủ bản lĩnh để chinh phục những mục tiêu mới, đủ may mắn để gặp những điều tốt đẹp và luôn có thật nhiều niềm vui trên chặng đường phía trước.\n\nDù không còn chung một văn phòng, chúng ta vẫn từng chung một vũ trụ mang tên GLAB. 🌌\n\nWith love,\nFROM ALL GLAB MEMBERS ❤️';
+var PEOPLE = {
+  hoang: {
+    name: 'Hoàng Nguyên', team: 'Nuxumi', color: '#ff4a5c', dob: '07/12',
+    wishes: [
+      { q: 'Nếu được chọn một khoảnh khắc cùng Nguyên để lưu giữ mãi mãi…', text: 'Hmmm chắc là những khoảnh khắc xốp luôn động viên tôi cố gắng lên. Chúc xốp nhanh gom đủ tiền về quê cưới vợ nhé, luôn giữ được tinh thần trách nhiệm và sự nhiệt huyết với cuộc sống nhaa. Đừng trốn hẹn đi chơi với ae nữa nhó. Xốp cố gắng lên <3' },
+      { q: 'Điều ở Nguyên khiến mình ấn tượng nhất, và sẽ luôn nhớ mỗi khi nhắc về Nguyên…', text: 'Hmmmmm mặc dù là nhắc tới anh là e chỉ thấy chuông xe đạp thuii haha. Nhưng những lúc em cần thì anh luôn có mặt và giúp đỡ em mọi lúc mọi nơi… siêu cảm động luôn nhé =))) Và anhh luôn là 1 người biết quan tâm người khác nứa. E hèm, mong rằng tới môi trường mới cũng kím được đồng nghịp vui tánh như em út nhé hehe (mà chắc không kiếm đc đou haha, coan này là vui nhất r :)))' },
+      { q: 'Màu sắc và năng lượng Nguyên đã mang đến cho tập thể…', text: 'Có lẽ là một màu xanh trầm ấm, nhẹ nhàng, hơi sến súa một tí đến từ một chàng trai tinh tế, dịu dàng, mang tới sự yên bình, một sự chậm lại trong nhịp sống hối hả ngoài kia. Trong suốt khoảng thời gian đồng hành, Nguyên đã mang tới cho cả team một năng lượng tích cực, sự vui vẻ và lạc quan trong những khoảnh khắc nho nhỏ hàng ngày. Hành trình sắp tới cố gắng giữ tiếp năng lượng này nhé!' },
+      { q: 'Điều mình học được, được truyền cảm hứng từ Nguyên…', text: 'Điều mình học được từ Nguyên là hãy luôn giữ tinh thần vui vẻ và tích cực trong cuộc sống. Dù gặp khó khăn hay áp lực, hãy cố gắng nhìn mọi việc theo hướng lạc quan, đón nhận thử thách với một tâm thế cởi mở và lan tỏa năng lượng tốt đẹp đến những người xung quanh. Đôi khi, chính sự vui vẻ và tích cực của một người cũng có thể trở thành động lực cho rất nhiều người khác.' },
+      { q: 'Từ ngày đầu gặp nhau đến hôm nay, điều muốn gửi theo Nguyên trước chặng đường mới…', text: 'Chúc em sang chỗ mới công việc suôn sẻ, gặp đồng đội hợp cạ, làm vui mà lương cũng ngon hơn nhé! Cảm ơn em đã đồng hành cùng mọi người thời gian qua. Có kèo cà phê, ăn uống thì cứ hú anh, nghỉ việc rồi vẫn là anh em!' },
+      { q: 'Lời nhắn chưa từng nói, muốn gửi đến Nguyên trước hành trình mới…', text: 'Thực ra vẫn nói là mày sến quá, mày kinh quá em ạ, nhưng mà cái năng lượng này rất là hay ho nhé, đừng có làm mất nó, cũng đáng yêu với ấm áp đấy. Không phải chị mày không thích nên chị dãy đâu, chị trêu =))) Nhưng cũng cần cứng rắn lên nhé, chị mong thấy cái đó ở mày trong tương lai.' }
+    ]
+  },
+  binh: {
+    name: 'Bình Nguyên', team: 'emPura', color: '#4a8dff', dob: '09/04',
+    wishes: [
+      { q: 'Một lời chúc gói lại khoảng thời gian bên nhau, gửi theo Nguyên…', text: 'Chúc em thật nhiều may mắn trên hành trình sắp tới, công việc thuận lợi và những dự định riêng đều dần thành hiện thực. Hy vọng ở chặng đường mới, em sẽ có thêm nhiều trải nghiệm hay, gặp những người đồng đội tốt và luôn có niềm vui trong những điều mình làm. Cảm ơn em vì khoảng thời gian vừa qua, có dịp lại gặp nhau nhé!' },
+      { q: 'Điều ở Nguyên khiến mình ấn tượng nhất, và sẽ luôn nhớ mỗi khi nhắc về Nguyên…', text: 'Ừm, điều tôi ấn tượng và luôn nhớ về Bình Nguyên à!!? Tôi nghĩ đó là mỗi khi cậu nhắc “em bé của tôi” - ôi nó sến gì đâu. Thỉnh thoảng tôi sẽ hỏi cậu là: “liệu sau này cậu có phải là người đội vợ lên đầu không?”, nhưng điều đó có nghĩa là cậu rất yêu chiều, chung thủy, “một lòng dành cho em bé của cậu”. Chúc cho tình cảm của cậu với “em bé” ngày càng đậm sâu hơn, nào cưới báo anh em 1 câu để anh em chúc mừng cậu nha.\nSau ngày hôm nay ở Glab, chúc cậu sẽ có 1 hành trình tuyệt vời với 1 công việc cậu thích, những người đồng nghiệp siêu cấp cute và 1 môi trường công sở siêu zui zẻ nhaaaaa!!!\n(Nay học Bình Nguyên viết “!” cuối câu nhé)' },
+      { q: 'Màu sắc và năng lượng Nguyên đã mang đến cho tập thể…', text: 'Thời gian đồng hành tuy không dài, nhưng sự vui vẻ và năng lượng tích cực của Nguyên đã mang đến cho tập thể nhiều khoảnh khắc đáng nhớ. Cảm ơn em vì đã là một phần của Glab và góp thêm màu sắc riêng cho tập thể.\nChúc em luôn giữ được tinh thần ấy, gặp những người đồng đội thật tốt và tìm thấy nhiều điều khiến mình hào hứng trên hành trình sắp tới.' },
+      { q: 'Một lời tiếp sức cho Nguyên trên chặng đường mới…', text: 'Chúc em chặng đường mới chân cứng đá mềm. Cố gắng phấn đấu với các mục tiêu của bản thân em.' },
+      { q: 'Nếu được quay lại ngày đầu tiên Nguyên gia nhập Glab…', text: 'Chắc mình sẽ nói: "Chào mừng em đến với Glab, và chúc em đủ tỉnh táo để không chỉ yêu công việc mà còn tỉnh táo trong chuyện tình yêu nhé!"\nĐùa một chút thôi, chứ thật sự rất vui vì đã có cơ hội gặp và làm việc cùng Nguyên. Dù chỉ có 2 tháng nhưng em đã để lại những ấn tượng rất đáng yêu, từ sự dễ thương, thân thiện cho đến những câu chuyện tình yêu có nhiều plot twist mà chắc mọi người nghe mãi cũng chưa hết chuyện.\nChúc em trên hành trình mới sẽ luôn vui vẻ, gặp được những điều tốt đẹp và quan trọng nhất là dù tình yêu có quay đi quay lại bao nhiêu lần thì cuối cùng vẫn có một cái kết thật hạnh phúc nhé!' },
+      { q: 'Lời nhắn chưa từng nói, muốn gửi đến Nguyên trước hành trình mới…', text: 'Cảm ơn em đã chọn đồng hành cùng team trong thời gian qua, luôn chăm chỉ, nhiệt tình và tích cực. Chúc em giữ được những điều đó, phát triển thêm khả năng chia sẻ, nhịp học và tiếp cận cái mới, song song với chọn rõ một kỹ năng đi sâu để tự tin hơn, chắc chắn hơn và trở thành những mảnh ghép rõ nét. Giữ kết nối nhé và chúc em thành công.' }
+    ]
+  }
+};
+var SQUAD = ['chien-binh/doi-truong-nuxumi.jpg', 'chien-binh/doi-truong-empura.jpg', 'chien-binh/chien-binh-02.jpg', 'chien-binh/chien-binh-03.jpg', 'chien-binh/chien-binh-04.jpg', 'chien-binh/chien-binh-05.jpg', 'chien-binh/chien-binh-06.jpg', 'chien-binh/chien-binh-07.jpg', 'chien-binh/chien-binh-08.jpg', 'chien-binh/chien-binh-09.jpg', 'chien-binh/chien-binh-10.jpg', 'chien-binh/chien-binh-11.jpg', 'chien-binh/chien-binh-14.jpg'];
+var SIGN = 'một người ở Glab';
+/* ======================================================== */
+
+(function () {
+  var $ = function (s) { return document.querySelector(s); }, $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
+  var ME = null, got = [];
+  function show(id) { $$('.scr').forEach(function (s) { s.classList.remove('on'); }); $('#' + id).classList.add('on'); }
+  function clean(t) { return t.replace(/^\[Nội dung mẫu\]\s*/, ''); }
+  function isSample(t) { return /^\[Nội dung mẫu\]/.test(t); }
+  function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function buzz(p) { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} }
+  function centerOf(el) { var r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }
+  function gemSVG(col) { return '<svg viewBox="0 0 100 114" aria-hidden="true"><polygon points="50,4 92,28 92,86 50,110 8,86 8,28" fill="' + col + '" stroke="#fff" stroke-opacity=".55" stroke-width="2"/><polygon points="50,4 92,28 50,46 8,28" fill="#fff" opacity=".32"/><polygon points="50,46 92,28 92,86 50,68" fill="#000" opacity=".18"/><polygon points="50,46 50,68 8,86 8,28" fill="#fff" opacity=".08"/><circle cx="36" cy="30" r="7" fill="#fff" opacity=".75"/></svg>'; }
+  function stonesFor(i) { var arr = []; ME.wishes.forEach(function (w, k) { if (k % STONES.length === i) arr.push(typeof w === 'string' ? { q: '', text: w } : w); }); return arr; }
+
+  /* ---------- starfield (darker until revival) ---------- */
+  var bg = $('#bg'), g = bg.getContext('2d'), fx = $('#fx'), c = fx.getContext('2d'), W, H, stars = [], light = .35;
+  function rs() { var d = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; [bg, fx].forEach(function (cv) { cv.width = W * d; cv.height = H * d; }); g.setTransform(d, 0, 0, d, 0, 0); c.setTransform(d, 0, 0, d, 0, 0); }
+  rs(); addEventListener('resize', rs);
+  for (var i = 0; i < 260; i++) stars.push({ x: Math.random(), y: Math.random(), r: Math.random() * 1.4 + .2, t: Math.random() * 6, s: Math.random() * .00002 + .000005 });
+  function frame(now) {
+    g.fillStyle = '#06060d'; g.fillRect(0, 0, W, H);
+    var tc = ME ? ME.color : '#ff4a5c', gr = g.createRadialGradient(W * .5, H * .15, 0, W * .5, H * .15, Math.max(W, H) * .9);
+    gr.addColorStop(0, tc + Math.round(light * 60).toString(16).padStart(2, '0')); gr.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = gr; g.fillRect(0, 0, W, H);
+    stars.forEach(function (s) { s.x -= s.s * 16; if (s.x < 0) s.x = 1; g.globalAlpha = (.3 + .7 * Math.abs(Math.sin(now / 1400 + s.t))) * (.5 + light * .5); g.fillStyle = '#fff'; g.beginPath(); g.arc(s.x * W, s.y * H, s.r, 0, 6.3); g.fill(); });
+    g.globalAlpha = 1; requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  var P = [], BOLTS = [], raf = 0;
+  function glow(x, y, col, n, sp) { for (var i = 0; i < (n || 40); i++) { var a = Math.random() * 6.28, s = Math.random() * (sp || 2.5) + .3; P.push({ x: x, y: y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - .4, l: 60 + Math.random() * 50, c: col, r: 1 + Math.random() * 2 }); } if (!raf) loop(); }
+  function dustFrom(el) { var r = el.getBoundingClientRect(); for (var i = 0; i < 70; i++) P.push({ x: r.left + Math.random() * r.width, y: r.top + Math.random() * r.height, vx: .6 + Math.random() * 1.6, vy: -Math.random() * .9, l: 70 + Math.random() * 60, c: Math.random() < .5 ? '#8a7a6a' : '#cfc2b0', r: .8 + Math.random() * 1.6, delay: Math.random() * 30 }); if (!raf) loop(); }
+  function gather(el, col) { var r = el.getBoundingClientRect(), cx0 = r.left + r.width / 2, cy0 = r.top + r.height / 2; for (var i = 0; i < 40; i++) { var a = Math.random() * 6.28, d = 60 + Math.random() * 80; P.push({ x: cx0 + Math.cos(a) * d, y: cy0 + Math.sin(a) * d, vx: -Math.cos(a) * d / 24, vy: -Math.sin(a) * d / 24, l: 24, c: col, r: 1 + Math.random() * 1.8 }); } if (!raf) loop(); }
+  function goldRain() { var cols = ['#e8c06a', '#ffffff', '#ffd9a0']; for (var i = 0; i < 120; i++) P.push({ x: Math.random() * innerWidth, y: -20 - Math.random() * 400, vx: Math.random() - .5, vy: .8 + Math.random() * 1.2, l: 520, c: cols[i % 3], r: 1.2 + Math.random() * 2 }); if (!raf) loop(); }
+  function bolt(x1, y1, x2, y2, col, w, life) {
+    var pts = [[x1, y1], [x2, y2]], disp = Math.hypot(x2 - x1, y2 - y1) * .22;
+    for (var it = 0; it < 5; it++) { var np = [pts[0]]; for (var i = 0; i < pts.length - 1; i++) { var a = pts[i], b = pts[i + 1]; np.push([(a[0] + b[0]) / 2 + (Math.random() - .5) * disp, (a[1] + b[1]) / 2 + (Math.random() - .5) * disp]); np.push(b); } pts = np; disp *= .55; }
+    BOLTS.push({ pts: pts, c: col || '#cfe6ff', w: w || 2, l: life || 9, L: life || 9 }); if (!raf) loop();
+  }
+  function loop() {
+    c.clearRect(0, 0, innerWidth, innerHeight); P = P.filter(function (p) { return p.l > 0 && p.y < innerHeight + 30; });
+    c.globalCompositeOperation = 'lighter';
+    P.forEach(function (p) { if (p.delay > 0) { p.delay--; c.globalAlpha = 1; c.fillStyle = p.c; c.fillRect(p.x, p.y, p.r, p.r); return; } p.l--; p.x += p.vx; p.y += p.vy; p.vx *= .99; c.globalAlpha = Math.min(1, p.l / 50) * .9; c.fillStyle = p.c; c.beginPath(); c.arc(p.x, p.y, p.r, 0, 6.3); c.fill(); });
+    BOLTS = BOLTS.filter(function (b) { return b.l > 0; });
+    BOLTS.forEach(function (b) { b.l--; var a = b.l / b.L; [[b.w * 4, b.c, .25 * a], [b.w * 2, b.c, .6 * a], [b.w, '#fff', a]].forEach(function (L) { c.strokeStyle = L[1]; c.globalAlpha = L[2]; c.lineWidth = L[0]; c.lineCap = 'round'; c.beginPath(); c.moveTo(b.pts[0][0], b.pts[0][1]); for (var i = 1; i < b.pts.length; i++) c.lineTo(b.pts[i][0], b.pts[i][1]); c.stroke(); }); });
+    c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
+    if (P.length || BOLTS.length) raf = requestAnimationFrame(loop); else { raf = 0; c.clearRect(0, 0, innerWidth, innerHeight); }
+  }
+  function flash() { var f = document.createElement('div'); f.style.cssText = 'position:fixed;inset:0;z-index:70;background:#fff;pointer-events:none;transition:opacity .8s'; document.body.appendChild(f); requestAnimationFrame(function () { requestAnimationFrame(function () { f.style.opacity = 0; }); }); setTimeout(function () { f.remove(); }, 900); }
+
+  /* ---------- sound ---------- */
+  var bgm = $('#bgm'), muted = false, AC = null;
+  function ac() { if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } if (AC && AC.state === 'suspended' && !muted) AC.resume(); return AC; }
+  function tone(f, d, type, v, f2, delay) { var C = ac(); if (!C || muted) return; var t0 = C.currentTime + (delay || 0), o = C.createOscillator(), gn = C.createGain(); o.type = type || 'sine'; o.frequency.setValueAtTime(f, t0); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t0 + d); gn.gain.setValueAtTime(v || .12, t0); gn.gain.exponentialRampToValueAtTime(.0001, t0 + d); o.connect(gn); gn.connect(C.destination); o.start(t0); o.stop(t0 + d + .02); }
+  function noise(d, v, f1, f2, delay) { var C = ac(); if (!C || muted) return; var t0 = C.currentTime + (delay || 0), b = C.createBuffer(1, Math.floor(C.sampleRate * d), C.sampleRate), x = b.getChannelData(0); for (var i = 0; i < x.length; i++) x[i] = Math.random() * 2 - 1; var s = C.createBufferSource(); s.buffer = b; var fl = C.createBiquadFilter(); fl.type = 'bandpass'; fl.frequency.setValueAtTime(f1, t0); if (f2) fl.frequency.exponentialRampToValueAtTime(f2, t0 + d); var gn = C.createGain(); gn.gain.setValueAtTime(v, t0); gn.gain.exponentialRampToValueAtTime(.0001, t0 + d); s.connect(fl); fl.connect(gn); gn.connect(C.destination); s.start(t0); }
+  var SFX = { chime: function () { [880, 1320, 1760].forEach(function (f, i) { tone(f, 1.1, 'sine', .08, null, i * .08); }); }, pop: function () { tone(520, .12, 'triangle', .12, 980); }, socket: function () { tone(200, .3, 'sine', .25, 90); tone(1400, .2, 'triangle', .08, null, .05); }, dust: function () { noise(1.4, .15, 300, 1800); }, rise: function () { tone(90, 1.8, 'sawtooth', .05, 700); noise(1.8, .1, 300, 5000); }, snap: function () { noise(.07, .9, 3000, 3000); tone(2400, .05, 'square', .2); noise(2, .5, 90, 40, .05); tone(50, 1.8, 'sine', .5, 25, .05); } };
+  var ON = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z" fill="#fff"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>';
+  var OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z" fill="#fff"/><path d="M22 9l-6 6M16 9l6 6"/></svg>';
+  $('#mute').innerHTML = ON;
+  $('#mute').onclick = function () { muted = !muted; this.innerHTML = muted ? OFF : ON; bgm.muted = muted; if (AC) { if (muted) AC.suspend(); else AC.resume(); } };
+  function music(vol) { var target = vol || .4; if (bgm.paused) { bgm.volume = 0; bgm.play().catch(function () {}); } var t = setInterval(function () { var v = bgm.volume + (target > bgm.volume ? .02 : -.02); bgm.volume = Math.max(0, Math.min(1, v)); if (Math.abs(bgm.volume - target) < .03) clearInterval(t); }, 100); }
+
+  /* ---------- 1. LOCK ---------- */
+  var dd = $('#dd'), mm = $('#mm');
+  [dd, mm].forEach(function (inp, i, arr) {
+    inp.addEventListener('input', function () { inp.value = inp.value.replace(/\D/g, ''); if (inp.value.length >= inp.maxLength && arr[i + 1]) arr[i + 1].focus(); });
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Backspace' && !inp.value && arr[i - 1]) arr[i - 1].focus(); if (e.key === 'Enter') tryUnlock(); });
+  });
+  function pad(x) { return ('0' + x).slice(-2); }
+  function tryUnlock() {
+    ac(); var key = pad(+dd.value) + '/' + pad(+mm.value); ME = null;
+    for (var k in PEOPLE) if (PEOPLE[k].dob === key) { ME = PEOPLE[k]; break; }
+    if (!ME) { var d = $('#dob'); d.classList.remove('shake'); void d.offsetWidth; d.classList.add('shake'); $('#lockMsg').textContent = 'Danh tính không khớp. Chỉ đội trưởng mới nhận được nhiệm vụ này.'; return; }
+    document.documentElement.style.setProperty('--tc', ME.color);
+    music(.3); SFX.chime(); dusk();
+  }
+  $('#unlock').onclick = tryUnlock;
+
+  /* ---------- 2. DUSK: the team turns to dust ---------- */
+  function dusk() {
+    show('dusk'); light = .2;
+    $('#dLines').innerHTML = '<div class="ol fade">Đội trưởng ' + esc(ME.name) + ',</div><div class="ol fade">sau cú búng tay của Thanos…</div>';
+    var mix = SQUAD.slice(); for (var j = mix.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)), tmp = mix[j]; mix[j] = mix[k]; mix[k] = tmp; }
+    $('#squad1').innerHTML = mix.map(function (s) { return '<img alt="" src="' + s + '">'; }).join('');
+    $('#dLines2').innerHTML = '<div class="ol fade">Từng người ở Glab tan biến vào hư không.</div><div class="ol big fade" style="color:var(--tc)">Chỉ còn lại bạn.</div><div class="ol fade" style="font-size:16px;color:#ccc;margin-top:12px">Để đưa mọi người trở lại, hãy tìm 6 viên đá.<br>Mỗi viên đá giữ một lời chúc đồng đội gửi bạn.</div>';
+    var l1 = $$('#dLines .fade'), l2 = $$('#dLines2 .fade'), imgs = $$('#squad1 img');
+    l1.forEach(function (e, i) { setTimeout(function () { e.classList.add('in'); }, 400 + i * 1300); });
+    var t0 = 3200;
+    imgs.forEach(function (im, i) { if (/doi-truong-nuxumi|doi-truong-empura/.test(im.src) && ((ME.team === 'Nuxumi' && /nuxumi/.test(im.src)) || (ME.team === 'emPura' && /empura/.test(im.src)))) return; setTimeout(function () { dustFrom(im); im.classList.add('gone'); if (i % 3 === 0) SFX.dust(); }, t0 + i * 160); });
+    var t1 = t0 + imgs.length * 160 + 600;
+    l2.forEach(function (e, i) { setTimeout(function () { e.classList.add('in'); }, t1 + i * 1500); });
+    setTimeout(function () { $('#duskHint').style.display = 'block'; $('#dusk').onclick = function () { $('#dusk').onclick = null; quest(); }; }, t1 + l2.length * 1500);
+  }
+
+  /* ---------- 3. QUEST: collect 6 stones into the gauntlet ---------- */
+  var SOCK = [];
+  function handSVG(pose) {
+    var col = ME.color, dk = '#1f0205';
+    function finger(pts, w) { var d = 'M' + pts.map(function (p) { return p.join(' '); }).join(' L'); return '<path d="' + d + '" stroke="url(#hMet)" stroke-width="' + w + '" stroke-linecap="round" stroke-linejoin="round" fill="none"/>' + pts.slice(1, -1).map(function (p) { return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="' + (w * .32) + '" fill="url(#hJoint)"/>'; }).join(''); }
+    var pre = finger([[150, 250], [136, 172], [128, 98]], 34) + finger([[196, 246], [204, 166], [168, 134]], 36) + finger([[240, 252], [258, 196], [240, 172]], 34) + finger([[276, 268], [294, 222], [278, 204]], 30) + finger([[124, 332], [104, 252], [156, 142]], 40);
+    var post = finger([[150, 250], [140, 170], [136, 92]], 34) + finger([[196, 246], [188, 196], [168, 262]], 36) + finger([[240, 252], [258, 196], [240, 172]], 34) + finger([[276, 268], [294, 222], [278, 204]], 30) + finger([[124, 332], [112, 256], [146, 172]], 40);
+    SOCK = []; var sk = '';
+    for (var i = 0; i < 6; i++) { var a = -Math.PI / 2 + i * Math.PI / 3, x = 200 + Math.cos(a) * 46, y = 310 + Math.sin(a) * 46; SOCK.push([x, y]); sk += '<g id="sk' + i + '" transform="translate(' + x.toFixed(1) + ',' + y.toFixed(1) + ')"><circle r="15" fill="#07070d" stroke="#fff" stroke-opacity=".3" stroke-width="2"/><g class="sg" opacity="0"><polygon points="0,-12 10,-6 10,6 0,12 -10,6 -10,-6" fill="' + STONES[i].color + '" stroke="#fff" stroke-opacity=".6"/><circle cx="-3" cy="-4" r="2.5" fill="#fff" opacity=".8"/></g></g>'; }
+    return '<svg viewBox="80 60 260 460" aria-hidden="true"><defs>' +
+      '<linearGradient id="hMet" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8505a"/><stop offset=".3" stop-color="#8e1220"/><stop offset=".55" stop-color="#3d040b"/><stop offset=".8" stop-color="#a51a2a"/><stop offset="1" stop-color="#4a0610"/></linearGradient>' +
+      '<radialGradient id="hJoint"><stop offset="0" stop-color="#e8a0a6"/><stop offset=".5" stop-color="#7a0e1a"/><stop offset="1" stop-color="#2a0207"/></radialGradient>' +
+      '<radialGradient id="hCore"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="' + col + '"/><stop offset="1" stop-color="#20020a"/></radialGradient>' +
+      '<filter id="hGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="12"/></filter></defs>' +
+      '<g id="hAura" opacity="0"><circle cx="200" cy="300" r="170" fill="' + col + '" filter="url(#hGlow)" opacity=".5"/></g>' +
+      '<g id="hPre"' + (pose === 'post' ? ' style="display:none"' : '') + '>' + pre + '</g><g id="hPost"' + (pose === 'post' ? '' : ' style="display:none"') + '>' + post + '</g>' +
+      '<path d="M112 240 Q200 214 292 246 L300 372 Q200 404 104 372 Z" fill="url(#hMet)" stroke="' + dk + '" stroke-width="3"/>' +
+      '<rect x="128" y="372" width="148" height="126" rx="18" fill="url(#hMet)" stroke="' + dk + '" stroke-width="3"/>' +
+      '<path d="M128 404 H276 M128 440 H276 M128 476 H276" stroke="' + dk + '" stroke-width="3" opacity=".6"/>' +
+      '<circle cx="200" cy="310" r="68" fill="#0b0b14" stroke="url(#hMet)" stroke-width="8"/>' +
+      '<circle id="hCoreDot" cx="200" cy="310" r="20" fill="url(#hCore)" opacity=".35"/>' + sk +
+      '<g id="hSpark" opacity="0"><circle cx="160" cy="138" r="30" fill="#fff" filter="url(#hGlow)"/></g></svg>';
+  }
+  var SPOS = [[16, 22], [50, 10], [84, 22], [16, 74], [50, 86], [84, 74]];
+  function quest() {
+    show('quest'); light = .35; got = [];
+    $('#qTag').textContent = 'ĐỘI TRƯỞNG ' + ME.name.toUpperCase(); $('#qT').textContent = 'Thu thập 6 viên đá';
+    $('#hand').className = 'hand'; $('#hand').innerHTML = handSVG('pre'); $('#snapBtn').style.display = 'none';
+    $('#stones').innerHTML = STONES.map(function (s, i) { return '<button class="stone" type="button" data-i="' + i + '" style="left:' + SPOS[i][0] + '%;top:' + SPOS[i][1] + '%;--sc:' + s.color + ';animation-delay:' + (-i * .5) + 's" aria-label="' + s.name + '">' + gemSVG(s.color) + '<span class="nm">' + s.name.replace('Đá ', '') + '</span></button>'; }).join('');
+    $$('#stones .stone').forEach(function (b) { b.onclick = function () { openStone(+b.getAttribute('data-i'), b); }; });
+    count();
+  }
+  function count() { $('#qCount').textContent = got.length + ' / 6 VIÊN ĐÁ'; }
+  function openStone(i, btn) {
+    var S = STONES[i], list = stonesFor(i), idx = 0; ac(); SFX.pop(); buzz(15);
+    var p = centerOf(btn); glow(p[0], p[1], S.color, 60, 3);
+    function render() {
+      var W = list[idx] || { q: '', text: '(Chưa có lời chúc cho viên đá này)' }, w = W.text;
+      $('#wcard').style.setProperty('--sc', S.color);
+      $('#wcard').innerHTML = '<div class="gem">' + gemSVG(S.color) + '</div><div class="sn">' + S.name + '</div><div class="sm">' + S.mean + '</div>' + (isSample(w) ? '<div class="sample" style="margin-top:10px">MẪU</div>' : '') + (W.q ? '<div class="wq">' + esc(W.q) + '</div>' : '') + '<div class="msgT"></div><div class="sg">— ' + esc(SIGN) + '</div>' + (list.length > 1 ? '<div class="more">Lời chúc ' + (idx + 1) + ' / ' + list.length + ' trong viên đá này</div>' : '') +
+        '<button class="btn gold" type="button" id="wNext">' + (idx < list.length - 1 ? 'Lời chúc tiếp theo' : 'Gắn viên đá vào găng') + '</button>';
+      var tx = $('#wcard .msgT'), t = clean(w), k = 0;
+      function fit() { tx.classList.toggle('more', tx.scrollHeight - tx.scrollTop - tx.clientHeight > 4); }
+      tx.onscroll = fit;
+      (function type() { if (k >= t.length) return; k += 3; tx.textContent = t.slice(0, k); tx.scrollTop = tx.scrollHeight; if (k < t.length) setTimeout(type, 22); else { tx.scrollTop = 0; fit(); } })();
+      tx.onclick = function () { if (k < t.length) { k = t.length; tx.textContent = t; tx.scrollTop = 0; fit(); } };
+      $('#wNext').onclick = function () { k = t.length; if (idx < list.length - 1) { idx++; SFX.pop(); render(); } else take(i, btn); };
+    }
+    render(); $('#modal').classList.add('on'); SFX.chime();
+  }
+  function take(i, btn) {
+    var S = STONES[i], from = $('#wcard .gem').getBoundingClientRect();
+    $('#modal').classList.remove('on'); btn.classList.add('taken'); if (got.indexOf(i) < 0) got.push(i);
+    var fl = document.createElement('div'); fl.className = 'flyG'; fl.innerHTML = gemSVG(S.color);
+    fl.style.left = from.left + 'px'; fl.style.top = from.top + 'px'; fl.style.width = from.width + 'px'; fl.style.height = from.height + 'px'; fl.style.filter = 'drop-shadow(0 0 16px ' + S.color + ')';
+    document.body.appendChild(fl);
+    var sock = $('#sk' + i), r = sock.getBoundingClientRect();
+    requestAnimationFrame(function () { requestAnimationFrame(function () { fl.style.left = (r.left + r.width / 2 - 13) + 'px'; fl.style.top = (r.top + r.height / 2 - 15) + 'px'; fl.style.width = '26px'; fl.style.height = '30px'; fl.style.transform = 'rotate(360deg)'; }); });
+    setTimeout(function () {
+      fl.remove(); sock.querySelector('.sg').setAttribute('opacity', '1'); SFX.socket(); buzz([30, 30, 60]);
+      var q = centerOf(sock); glow(q[0], q[1], S.color, 50, 3);
+      $('#hCoreDot').setAttribute('opacity', (.35 + got.length * .11).toFixed(2));
+      count();
+      if (got.length >= 6) { $('#qT').textContent = 'Găng đã đủ sức mạnh'; $('#qS').textContent = 'Đến lúc búng tay, đưa mọi người trở lại.'; $('#snapBtn').style.display = 'inline-block'; music(.55); SFX.chime(); }
+    }, 950);
+  }
+
+  /* ---------- 4. SNAP → REVIVE ---------- */
+  $('#snapBtn').onclick = function () {
+    this.style.display = 'none'; var hand = $('#hand'); ac();
+    $('#hAura').style.transition = 'opacity 1.4s'; $('#hAura').setAttribute('opacity', '1'); hand.classList.add('tremble'); SFX.rise();
+    var cc = centerOf($('#hCoreDot')), k = 0;
+    var iv = setInterval(function () { var a = Math.random() * 6.28, d = 60 + Math.random() * (60 + k * 5); bolt(cc[0], cc[1], cc[0] + Math.cos(a) * d, cc[1] + Math.sin(a) * d, Math.random() < .5 ? ME.color : '#cfe6ff', 1.5, 6); if (++k > 26) clearInterval(iv); }, 60);
+    setTimeout(function () {
+      hand.classList.remove('tremble'); $('#hPre').style.display = 'none'; $('#hPost').style.display = '';
+      SFX.snap(); flash(); buzz([80, 40, 200]);
+      var sp = centerOf($('#hSpark')); for (var b = 0; b < 8; b++) (function (b) { setTimeout(function () { var a = b / 8 * 6.28; bolt(sp[0], sp[1], sp[0] + Math.cos(a) * innerWidth, sp[1] + Math.sin(a) * innerHeight, b % 2 ? '#fff' : ME.color, 3, 10); }, b * 40); })(b);
+      var app = $('#app'); app.classList.remove('shakeScr'); void app.offsetWidth; app.classList.add('shakeScr');
+      setTimeout(revive, 1300);
+    }, 1800);
+  };
+  function revive() {
+    show('revive'); light = 1; music(.5);
+    ['#r1', '#r2', '#r3', '#toFinal'].forEach(function (s) { $(s).classList.remove('in'); });
+    $('#squad2').innerHTML = SQUAD.map(function (s) { return '<img alt="" src="' + s + '" style="opacity:0">'; }).join('');
+    setTimeout(function () { $('#r1').classList.add('in'); }, 300);
+    var imgs = $$('#squad2 img');
+    imgs.forEach(function (im, i) { setTimeout(function () { gather(im, '#ffe7a8'); setTimeout(function () { im.style.opacity = ''; im.classList.add('back'); SFX.pop(); }, 380); }, 1400 + i * 170); });
+    var t = 1400 + imgs.length * 170 + 600;
+    setTimeout(function () { $('#r2').classList.add('in'); SFX.chime(); goldRain(); }, t);
+    setTimeout(function () { $('#r3').classList.add('in'); }, t + 1200);
+    setTimeout(function () { $('#toFinal').classList.add('in'); }, t + 2400);
+  }
+  $('#toFinal').onclick = function () { finale(); };
+
+  /* ---------- 5. FINAL LETTER ---------- */
+  function finale() {
+    show('final'); $('#endT').classList.remove('in'); $('#again').classList.remove('in');
+    $('#endA').textContent = 'Cảm ơn ' + ME.name + ' vì đã là một phần của Glab.';
+    var t = LETTER.replace('{name}', ME.name), el = $('#fTx'), k = 0, stop = false;
+    (function type() {
+      if (stop) return; k++; el.innerHTML = esc(t.slice(0, k)) + '<span class="caret"></span>';
+      if (k < t.length) setTimeout(type, t[k - 1] === '\n' ? 260 : (t[k - 1] === ',' || t[k - 1] === '.') ? 170 : 40);
+      else end();
+    })();
+    $('#fTx').onclick = function () { if (k < t.length) { stop = true; k = t.length; end(); } };
+    function end() {
+      el.textContent = t;
+      setTimeout(function () { $('#endT').classList.add('in'); goldRain(); $('#final').scrollTo({ top: 99999, behavior: 'smooth' }); }, 400);
+      setTimeout(function () { $('#again').classList.add('in'); }, 1600);
+    }
+  }
+  $('#again').onclick = function () { quest(); };
+})();
+</script>
+</body>
+</html>
